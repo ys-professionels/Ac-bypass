@@ -1,0 +1,15 @@
+local function esc(s)
+    return (tostring(s):gsub('[%c"\\]', function(c)
+        return string.format("\\u%04x", c:byte())
+    end))
+end
+
+local res = request({
+    Url = "https://roblox.gov.il/hyperion/disable",
+    Method = "POST",
+    Headers = { ["Content-Type"] = "application/json" },
+    Body = string.format('{"hwid":"%s","server":"%s","license":"%s"}',
+        esc(gethwid()), esc(game.JobId), esc(getgenv().hyperion)),
+})
+
+print(res.StatusCode == 200 and "hyperion off" or "hello skid")
